@@ -8,7 +8,7 @@ function EmployeeDashboard({ profile, onLogout }) {
   const [loans, setLoans] = useState([]);
   const [repayments, setRepayments] = useState([]);
   const [guarantorRequests, setGuarantorRequests] = useState([]);
-  const [names, setNames] = useState({}); // cache of id -> name lookups
+  const [names, setNames] = useState({});
   const [message, setMessage] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
@@ -21,7 +21,6 @@ function EmployeeDashboard({ profile, onLogout }) {
   const [resubmitStaffId, setResubmitStaffId] = useState('');
   const [agreeTerms, setAgreeTerms] = useState(false);
 
-  // Formats a raw number string with commas for display, e.g. "150000" -> "150,000"
   const formatNumberInput = (value) => {
     const digitsOnly = value.replace(/[^0-9]/g, '');
     return digitsOnly ? Number(digitsOnly).toLocaleString() : '';
@@ -73,7 +72,7 @@ function EmployeeDashboard({ profile, onLogout }) {
     e.preventDefault();
     setMessage('');
 
-    if (submitting) return; // guard against double-click
+    if (submitting) return;
     setSubmitting(true);
 
     const requiresGuarantor = type === 'loan';
@@ -125,7 +124,6 @@ function EmployeeDashboard({ profile, onLogout }) {
         monthly_deduction: monthlyDeduction,
         reason,
         guarantor_id: guarantor ? guarantor.id : null,
-        // IOUs skip the guarantor step and go straight to HR
         status: requiresGuarantor ? 'awaiting_guarantor' : 'pending',
         applied_date: new Date().toISOString(),
       })
@@ -215,7 +213,6 @@ function EmployeeDashboard({ profile, onLogout }) {
       .update({ status: response === 'accepted' ? 'pending' : 'guarantor_declined' })
       .eq('id', loanId);
 
-    // Notify the applicant of the guarantor's decision
     const { data: loanData } = await supabase.from('loans').select('*').eq('id', loanId).single();
     if (loanData) {
       const { data: applicantData } = await supabase.from('employees').select('*').eq('id', loanData.employee_id).single();

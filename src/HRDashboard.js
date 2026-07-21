@@ -45,6 +45,7 @@ function HRDashboard({ profile, onLogout }) {
     (empData || []).forEach((e) => (empMap[e.id] = e));
     setEmployees(empMap);
 
+
     const { data: auditData } = await supabase
       .from('audit_log')
       .select('*')
