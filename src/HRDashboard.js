@@ -173,7 +173,6 @@ function HRDashboard({ profile, onLogout }) {
   const completed = loans.filter((l) => l.status === 'completed');
   const declined = loans.filter((l) => l.status === 'declined');
   const awaitingGuarantor = loans.filter((l) => ['awaiting_guarantor', 'guarantor_declined'].includes(l.status));
-  const disbursedLoans = loans.filter((l) => l.status === 'disbursed');
 
   const employeeName = (id) => employees[id]?.full_name || 'Unknown';
   const employeeStaffId = (id) => employees[id]?.staff_id || '—';
@@ -189,11 +188,6 @@ function HRDashboard({ profile, onLogout }) {
     const paidOnes = repayments.filter((r) => r.loan_id === loanId && r.paid && r.paid_date);
     if (paidOnes.length === 0) return null;
     return paidOnes.sort((a, b) => new Date(b.paid_date) - new Date(a.paid_date))[0].paid_date;
-  };
-
-  const isOverdue = (dueDate, paid) => {
-    if (paid) return false;
-    return new Date(dueDate) < new Date(new Date().toDateString());
   };
 
   const statusLabel = (status) => {

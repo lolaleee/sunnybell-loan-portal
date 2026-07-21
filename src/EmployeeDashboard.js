@@ -29,6 +29,7 @@ function EmployeeDashboard({ profile, onLogout }) {
   useEffect(() => {
     fetchLoans();
     fetchGuarantorRequests();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const lookupName = async (id) => {
@@ -223,8 +224,6 @@ function EmployeeDashboard({ profile, onLogout }) {
 
     fetchGuarantorRequests();
   };
-
-  const getRepaymentsFor = (loanId) => repayments.filter((r) => r.loan_id === loanId);
 
   const statusLabel = (status) => {
     const labels = {
